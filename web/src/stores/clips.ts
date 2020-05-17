@@ -70,7 +70,7 @@ export namespace Clips {
 
       try {
         dispatch({ type: ActionType.LOAD });
-        const clips = await state.api.fetchRandomClips(MIN_CACHE_SIZE);
+        const clips = await state.api.fetchRandomClips(MIN_CACHE_SIZE - localeClips(state).clips.length);
 
         dispatch({
           type: ActionType.REFILL_CACHE,
@@ -107,7 +107,8 @@ export namespace Clips {
       getState: () => StateTree
     ) => {
       const state = getState();
-      const id = clipId || localeClips(state).next.id;
+      const id = clipId;
+
       dispatch({ type: ActionType.REMOVE_CLIP, clipId: id });
       const {
         showFirstContributionToast,
@@ -176,36 +177,29 @@ export namespace Clips {
             ? localeState.clips.concat(action.clips)
             : localeState.clips
           : [];
-        const next = localeState.next || clips.shift();
+
+        const filtered = clips.filter(
+          (clip1, i) =>
+            clips.findIndex(clip2 => clip2.id === clip1.id) === i
+        );
+
         return {
           ...state,
           [locale]: {
-            clips: clips.filter(
-              (clip1, i) =>
-                clips.findIndex(clip2 => clip2.id === clip1.id) === i
-            ),
+            clips: filtered,
             isLoading: false,
             hasEarnedSessionToast: false,
             showFirstContributionToast: false,
             showFirstStreakToast: false,
             challengeEnded: true,
-            next,
+            next: filtered.pop(),
           },
         };
       }
 
       case ActionType.REMOVE_CLIP: {
-        console.log("remove:" + action.clipId);
-        console.log(localeState.clips);
         const clips = localeState.clips.filter(c => c.id !== action.clipId);
-        console.log("remainder");
-        console.log(clips);
-        const next = clips.pop();
-        console.log(next);
-        console.log("new state");
-        const newState = { ...localeState, clips, next };
-        console.log(newState);
-        return { ...state, [locale]: newState };
+        return { ...state, [locale]: { ...localeState, clips} };
       }
 
       case ActionType.ACHIEVEMENT: {

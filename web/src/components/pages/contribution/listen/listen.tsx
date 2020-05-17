@@ -246,11 +246,7 @@ class ListenPage extends React.Component<Props, State> {
     const clipIndex = this.getClipIndex();
     const activeClip = clips[clipIndex];
 
-    console.log("listen.tsx");
-    console.log(clips);
     const sentences = clips.map(clip => clip.sentence);
-    console.log("sentences");
-    console.log(sentences);
     return (
       <>
         <audio
