@@ -414,9 +414,6 @@ class ContributionPage extends React.Component<Props, State> {
     } = this.props;
     const { selectedPill } = this.state;
 
-    console.log(sentences);
-    console.log(this.isLoaded);
-
     return isSubmitted ? (
       <Success onReset={onReset} type={type} />
     ) : (
@@ -438,7 +435,6 @@ class ContributionPage extends React.Component<Props, State> {
                       ? SET_COUNT - 1
                       : activeIndex;
                     const isActive = i === activeSentenceIndex;
-                    console.log(sentence);
                     return (
                       <div
                         key={i}

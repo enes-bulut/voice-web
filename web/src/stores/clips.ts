@@ -204,6 +204,7 @@ export namespace Clips {
         console.log(next);
         console.log("new state");
         const newState = { ...localeState, clips, next };
+        console.log(newState);
         return { ...state, [locale]: newState };
       }
 
