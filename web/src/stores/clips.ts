@@ -72,8 +72,6 @@ export namespace Clips {
         dispatch({ type: ActionType.LOAD });
         const clips = await state.api.fetchRandomClips(MIN_CACHE_SIZE);
 
-        console.log("clips in action");
-        console.log(clips);
         dispatch({
           type: ActionType.REFILL_CACHE,
           clips: clips.map(clip => {
@@ -197,9 +195,16 @@ export namespace Clips {
       }
 
       case ActionType.REMOVE_CLIP: {
+        console.log("remove:" + action.clipId);
+        console.log(localeState.clips);
         const clips = localeState.clips.filter(c => c.id !== action.clipId);
+        console.log("remainder");
+        console.log(clips);
         const next = clips.pop();
-        return { ...state, [locale]: { ...localeState, clips, next } };
+        console.log(next);
+        console.log("new state");
+        const newState = { ...localeState, clips, next };
+        return { ...state, [locale]: newState };
       }
 
       case ActionType.ACHIEVEMENT: {

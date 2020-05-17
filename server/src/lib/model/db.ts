@@ -299,8 +299,6 @@ export default class DB {
       );
     }
 
-    console.log("tax");
-    console.log(taxonomySentences);
     const regularSentences =
       taxonomySentences.length >= count
         ? []
@@ -310,8 +308,6 @@ export default class DB {
             count - taxonomySentences.length
           );
 
-    console.log("reg");
-    console.log(regularSentences);
     return taxonomySentences.concat(regularSentences);
   }
 
