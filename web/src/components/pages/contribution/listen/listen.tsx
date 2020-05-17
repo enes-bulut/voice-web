@@ -219,9 +219,13 @@ class ListenPage extends React.Component<Props, State> {
 
   private handleSkip = () => {
     const { removeClip } = this.props;
+    console.log(removeClip);
     const { clips } = this.state;
+    console.log(clips);
     this.stop();
+    console.log("stopped");
     removeClip(clips[this.getClipIndex()].id);
+    console.log("removed");
     this.setState({
       clips: clips.map((clip, i) =>
         this.getClipIndex() === i
@@ -231,6 +235,8 @@ class ListenPage extends React.Component<Props, State> {
       hasPlayed: false,
       hasPlayedSome: false,
     });
+
+    console.log("state set");
   };
 
   private reset = () => this.setState(initialState);
