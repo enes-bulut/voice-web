@@ -2,9 +2,9 @@ import { Action as ReduxAction, Dispatch } from 'redux';
 const contributableLocales = require('../../../locales/contributable.json') as string[];
 import StateTree from './tree';
 import { User } from './user';
-import { Clip, Sentence } from 'common';
+import { Clip } from 'common';
 
-const CACHE_SET_COUNT = 10;
+const MIN_CACHE_SIZE = 10;
 
 export namespace Clips {
   export interface State {
@@ -64,13 +64,16 @@ export namespace Clips {
       getState: () => StateTree
     ) => {
       const state = getState();
-      if (localeClips(state).clips.length > CACHE_SET_COUNT) {
+      if (localeClips(state).clips.length > MIN_CACHE_SIZE) {
         return;
       }
 
       try {
         dispatch({ type: ActionType.LOAD });
-        const clips = await state.api.fetchRandomClips(CACHE_SET_COUNT);
+        const clips = await state.api.fetchRandomClips(MIN_CACHE_SIZE);
+
+        console.log("clips in action");
+        console.log(clips);
         dispatch({
           type: ActionType.REFILL_CACHE,
           clips: clips.map(clip => {
