@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    image: mysql:5.7.30
+    image: ibmcom/mysql-s390x:5.7.24
     networks:
       - voice-web
     container_name: db
